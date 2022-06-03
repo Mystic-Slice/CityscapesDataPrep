@@ -88,7 +88,7 @@ def createLabelImage(inJson, annotation, encoding, counter, outline=None):
         return None
 
     # choose the classes that you want to make the masks
-    mask_list = ["car", "truck", "bus", "train", "motorcycle", "bicycle"]
+    mask_list = [ "person", "rider", "car", "truck", "bus", "caravan", "trailer", "train", "motorcycle", "bicycle" ]
 
     # make a dir to save the masks
     mask_dir = os.path.join(Maskdir, os.path.splitext(inJson)[0])
