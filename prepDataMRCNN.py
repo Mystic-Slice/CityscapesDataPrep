@@ -57,7 +57,7 @@ for folder in SUB_FOLDERS:
     JSON_FOLDER = f"Json_files\\{folder}\\*"
     for city in glob.glob(JSON_FOLDER):
         os.chdir(CITYSCAPES_SCRIPTS_PATH)
-        os.system(f"python json2labelImg.py {MASK_FOLDER} ..\\..\\{city}")
+        os.system(f"python createInstanceMasks.py {MASK_FOLDER} ..\\..\\{city}")
         os.chdir("..\\..\\")
     print(f"\r {count}/{len(SUB_FOLDERS)}", end="")
     count += 1

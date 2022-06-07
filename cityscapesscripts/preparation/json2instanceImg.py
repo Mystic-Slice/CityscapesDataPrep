@@ -94,7 +94,7 @@ def printError(message):
     sys.exit(-1)
 
 # Convert the given annotation to a label image
-def createInstanceImage(annotation, encoding):
+def createInstanceImage(annotation, outdir, encoding):
     # the size of the image
     size = ( annotation.imgWidth , annotation.imgHeight )
 
@@ -107,12 +107,6 @@ def createInstanceImage(annotation, encoding):
         print("Unknown encoding '{}'".format(encoding))
         return None
 
-    # this is the image that we want to create
-    instanceImg = Image.new("I", size, backgroundId)
-
-    # a drawer to draw into the image
-    drawer = ImageDraw.Draw( instanceImg )
-
     # a dict where we keep track of the number of instances that
     # we already saw of each class
     nbInstances = {}
@@ -124,6 +118,12 @@ def createInstanceImage(annotation, encoding):
     for obj in annotation.objects:
         label   = obj.label
         polygon = obj.polygon
+
+        # this is the image that we want to create
+        instanceImg = Image.new("I", size, backgroundId)
+
+        # a drawer to draw into the image
+        drawer = ImageDraw.Draw( instanceImg )
 
         # If the object is deleted, skip it
         if obj.deleted:
@@ -165,7 +165,7 @@ def createInstanceImage(annotation, encoding):
             print("Failed to draw polygon with label {} and id {}: {}".format(label,id,polygon))
             raise
 
-    return instanceImg
+        instanceImg.save(os.path.join(outdir, f"{id//1000}_{id%1000}.png"))
 
 # A method that does all the work
 # inJson is the filename of the json file
@@ -173,11 +173,15 @@ def createInstanceImage(annotation, encoding):
 # encoding can be set to
 #     - "ids"      : classes are encoded using the regular label IDs
 #     - "trainIds" : classes are encoded using the training IDs
-def json2instanceImg(inJson,outImg,encoding="ids"):
+def json2instanceImg(inJson,outdir,encoding="ids"):
     annotation = Annotation()
     annotation.fromJsonFile(inJson)
-    instanceImg = createInstanceImage( annotation , encoding )
-    instanceImg.save( outImg )
+    fileName = inJson.split('\\')[-1].split("_gtFine_polygons.json")[0]
+    try:
+        os.mkdir(os.path.join(outdir, fileName))
+    except:
+        pass
+    createInstanceImage( annotation , os.path.join(outdir, fileName), encoding )
 
 # The main method, if you execute this script directly
 # Reads the command line arguments and calls the method 'json2instanceImg'
@@ -204,12 +208,12 @@ def main(argv):
         printError( "Too many arguments" )
 
     inJson = args[0]
-    outImg = args[1]
+    outdir = args[1]
 
     if trainIds:
-        json2instanceImg( inJson , outImg , 'trainIds' )
+        json2instanceImg( inJson , outdir , 'trainIds' )
     else:
-        json2instanceImg( inJson , outImg )
+        json2instanceImg( inJson , outdir )
 
 # call the main method
 if __name__ == "__main__":
