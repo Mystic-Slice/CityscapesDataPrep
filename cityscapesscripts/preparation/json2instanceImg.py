@@ -186,7 +186,7 @@ def json2instanceImg(inJson,outdir,encoding="ids"):
 # The main method, if you execute this script directly
 # Reads the command line arguments and calls the method 'json2instanceImg'
 def main(argv):
-    trainIds = False
+    trainIds = True
     try:
         opts, args = getopt.getopt(argv,"ht")
     except getopt.GetoptError:
