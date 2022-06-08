@@ -93,7 +93,7 @@ labels = [
     Label(  'trailer'              , 30 ,        7 , 'vehicle'         , 7       , True         , True         , (  0,  0,110) ),
     Label(  'train'                , 31 ,        8 , 'vehicle'         , 7       , True         , False        , (  0, 80,100) ),
     Label(  'motorcycle'           , 32 ,        9 , 'vehicle'         , 7       , True         , False        , (  0,  0,230) ),
-    Label(  'bicycle'              , 33 ,       10 , 'vehicle'         , 7       , True         , False        , (119, 11, 32) ),
+    Label(  'bicycle'              , 33 ,       0 , 'vehicle'         , 7       , True         , False        , (119, 11, 32) ),
     Label(  'license plate'        , -1 ,       -1 , 'vehicle'         , 7       , False        , True         , (  0,  0,142) ),
 ]
 
